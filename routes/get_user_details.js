@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const userModel = require("../model/user_model");
 
-router.post("/", async (req, res) => {
+router.get("/", async (req, res) => {
   if (
     req.headers.authorization &&
     req.headers.authorization.split(" ")[0] === "Bearer"
