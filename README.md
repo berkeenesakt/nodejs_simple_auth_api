@@ -23,8 +23,6 @@ node -e "console.log(require('crypto').randomBytes(256).toString('base64'));"
 
 Also you can get a Database URI from [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
 
-## Configuration
-
 ## Usage
 
 ### Register a new user
