@@ -28,9 +28,10 @@ router.post("/", async (req, res) => {
           err: "Password is incorrect",
         });
       }
+      const token = await loginModel.generateToken(user);
       res.send({
         SCC: true,
-        user: user,
+        token: token,
       });
     } catch (error) {
       res.status(400).send(error.message);

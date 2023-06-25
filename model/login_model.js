@@ -1,5 +1,6 @@
 const client = require("../db");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const loginModel = {
   findByEmail: async (email) => {
@@ -13,6 +14,13 @@ const loginModel = {
   comparePassword: async (password, hash) => {
     const result = await bcrypt.compare(password, hash);
     return result;
+  },
+  generateToken: async (user) => {
+    const token = await jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET
+    );
+    return token;
   },
 };
 
