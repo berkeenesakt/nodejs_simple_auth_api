@@ -15,7 +15,7 @@ MONGODB_URI=
 JWT_SECRET=
 ```
 
-Add your own database credentials URI and a secret key for JSON Web Tokens. You can generate a secret key using the following command:
+Add your own database URI and a secret key for JSON Web Tokens. You can generate a secret key using the following command:
 
 ```bash
 node -e "console.log(require('crypto').randomBytes(256).toString('base64'));"
