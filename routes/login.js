@@ -12,7 +12,7 @@ router.post("/", async (req, res) => {
     try {
       const user = await loginModel.findByEmail(req.body.email);
       if (!user) {
-        res.status(404).send({
+        res.status(401).send({
           SCC: false,
           err: "User not found",
         });
@@ -27,12 +27,13 @@ router.post("/", async (req, res) => {
           SCC: false,
           err: "Password is incorrect",
         });
+      } else {
+        const token = await loginModel.generateToken(user);
+        res.send({
+          SCC: true,
+          token: token,
+        });
       }
-      const token = await loginModel.generateToken(user);
-      res.send({
-        SCC: true,
-        token: token,
-      });
     } catch (error) {
       res.status(400).send(error.message);
     }

@@ -12,6 +12,14 @@ router.post("/", async (req, res) => {
     return;
   }
   try {
+    const existingUser = await registerModel.findOne({ email: req.body.email });
+    if (existingUser) {
+      res.status(400).send({
+        SCC: false,
+        err: "User with this email already exists",
+      });
+      return;
+    }
     const user = {
       name: req.body.name,
       email: req.body.email,
@@ -19,9 +27,9 @@ router.post("/", async (req, res) => {
       created_at: new Date(),
     };
     await registerModel.create(user);
-    res.send({
+    res.status(200).send({
       SCC: true,
-      message: "User created successfully",
+      msg: "User created successfully",
     });
   } catch (error) {
     res.status(400).send(error);

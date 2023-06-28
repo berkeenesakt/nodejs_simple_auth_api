@@ -11,6 +11,11 @@ app.use("/register", registerRouter);
 app.use("/login", loginRouter);
 app.use("/get-user-details", userDetailsRoute);
 
-app.listen(3000, () => {
+const server = app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
+app.closeServer = () => {
+  server.close();
+};
+
+module.exports = app;
