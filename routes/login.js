@@ -14,7 +14,7 @@ router.post("/", async (req, res) => {
       if (!user) {
         res.status(401).send({
           SCC: false,
-          err: "User not found",
+          err: "User not found.",
         });
         return;
       }
