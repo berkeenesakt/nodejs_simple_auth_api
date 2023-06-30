@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const userModel = require("../model/user_model");
+const userService = require("../services/user");
 
 router.get("/", async (req, res) => {
   if (
@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
   ) {
     try {
       const token = req.headers.authorization.split(" ")[1];
-      const user = await userModel.getUser(token);
+      const user = await userService.getUser(token);
       user.password = undefined;
       res.send({
         SCC: true,

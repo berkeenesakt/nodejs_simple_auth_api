@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const registerModel = require("../model/register_model");
+const register = require("../services/register");
 const bcrypt = require("bcrypt");
 
 router.post("/", async (req, res) => {
@@ -12,7 +12,7 @@ router.post("/", async (req, res) => {
     return;
   }
   try {
-    const existingUser = await registerModel.findOne({ email: req.body.email });
+    const existingUser = await register.findOne({ email: req.body.email });
     if (existingUser) {
       res.status(400).send({
         SCC: false,
@@ -26,7 +26,7 @@ router.post("/", async (req, res) => {
       password: await bcrypt.hash(req.body.password, 10),
       created_at: new Date(),
     };
-    await registerModel.create(user);
+    await register.create(user);
     res.status(200).send({
       SCC: true,
       msg: "User created successfully",

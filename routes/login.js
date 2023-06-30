@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const loginModel = require("../model/login_model");
+const login = require("../services/login");
 
 router.post("/", async (req, res) => {
   if (!req.body.email || !req.body.password) {
@@ -10,25 +10,25 @@ router.post("/", async (req, res) => {
     });
   } else {
     try {
-      const user = await loginModel.findByEmail(req.body.email);
+      const user = await login.findByEmail(req.body.email);
       if (!user) {
-        res.status(401).send({
+        res.status(400).send({
           SCC: false,
           err: "User not found.",
         });
         return;
       }
-      const isPasswordCorrect = await loginModel.comparePassword(
+      const isPasswordCorrect = await login.comparePassword(
         req.body.password,
         user.password
       );
       if (!isPasswordCorrect) {
-        res.status(401).send({
+        res.status(400).send({
           SCC: false,
           err: "Password is incorrect",
         });
       } else {
-        const token = await loginModel.generateToken(user);
+        const token = await login.generateToken(user);
         res.send({
           SCC: true,
           token: token,

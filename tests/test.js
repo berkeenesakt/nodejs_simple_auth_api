@@ -13,7 +13,6 @@ afterAll(async () => {
 });
 
 const email = faker.faker.internet.email();
-token = "";
 describe("POST /register", () => {
   test("should register", async () => {
     const res = await request(app).post("/register").send({
@@ -65,7 +64,6 @@ describe("GET /login", () => {
       email: email,
       password: "test1234",
     });
-    token = res.body.token;
     expect(res.statusCode).toBe(200);
   });
   test("shouldn't login, email is required.", async () => {
@@ -88,15 +86,19 @@ describe("GET /login", () => {
       password: "test12345",
     });
     console.log(res.body);
-    expect(res.statusCode).toBe(401);
+    expect(res.statusCode).toBe(400);
   });
 });
 
 describe("GET /get-user-details", () => {
   test("should get user details", async () => {
+    const token = await request(app).post("/login").send({
+      email: "test@test.com",
+      password: "test1234",
+    });
     const res = await request(app)
       .get("/get-user-details")
-      .set("Authorization", "Bearer " + token)
+      .set("Authorization", "Bearer " + token.body.token)
       .send();
     console.log(res.body);
     expect(res.statusCode).toBe(200);
@@ -109,7 +111,7 @@ describe("GET /get-user-details", () => {
   test("shouldn't get user details, token is invalid.", async () => {
     const res = await request(app)
       .get("/get-user-details")
-      .set("Authorization", "Bearer " + token + "a")
+      .set("Authorization", "Bearer " + "a")
       .send();
     console.log(res.body);
     expect(res.statusCode).toBe(400);

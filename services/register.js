@@ -1,7 +1,6 @@
 const client = require("../db");
-
-const registerModel = {
-  create: async (user) => {
+class Registration {
+  static async create(user) {
     try {
       await client.connect();
       const database = client.db("auth");
@@ -14,8 +13,9 @@ const registerModel = {
     } finally {
       client.close();
     }
-  },
-  findOne: async (filter) => {
+  }
+
+  static async findOne(filter) {
     try {
       await client.connect();
       const database = client.db("auth");
@@ -28,7 +28,7 @@ const registerModel = {
     } finally {
       client.close();
     }
-  },
-};
+  }
+}
 
-module.exports = registerModel;
+module.exports = Registration;
